@@ -12,6 +12,10 @@ PulseBoard is a small notice-board web app. Anyone can read notices. A user who 
 |---|---|
 | ![landing](docs/screenshots/01-live-landing.png) | ![blocked](docs/screenshots/02-guest-write-blocked.png) |
 
+| Signed in with Google: notice published | Signed-out visitor sees the same notice (public read) |
+|---|---|
+| ![signed in](docs/screenshots/03-signed-in-post.png) | ![guest view](docs/screenshots/04-guest-sees-notice.png) |
+
 ## Firebase services used
 
 | Service | Role in this project | Cloud service model |
