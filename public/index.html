@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PulseBoard – Real-Time Cloud Notice Board</title>
+  <meta name="description" content="A real-time notice board built on Google Firebase (Hosting, Firestore, Authentication).">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">&#9679;</span>
+      <div>
+        <h1>PulseBoard</h1>
+        <p>Real-time cloud notice board</p>
+      </div>
+    </div>
+    <div class="right">
+      <span id="status" class="status" data-state="connecting" title="Firestore listener status">
+        <i></i><span id="status-text">Connecting…</span>
+      </span>
+      <span id="user-name" class="user-name" hidden></span>
+      <button id="btn-signin" class="btn primary" type="button">Sign in with Google</button>
+      <button id="btn-signout" class="btn" type="button" hidden>Sign out</button>
+    </div>
+  </header>
+
+  <div id="config-banner" class="banner" hidden>
+    Firebase is not configured yet. Paste your web-app config into
+    <code>public/firebase-config.js</code> and redeploy.
+  </div>
+
+  <main>
+    <section id="guest-card" class="card guest">
+      <p><strong>Anyone can read.</strong> Sign in with Google to post or delete your own notices.</p>
+      <button id="btn-guest-test" class="btn small" type="button">
+        Security test: try to post as a guest
+      </button>
+    </section>
+
+    <form id="composer" class="card composer" hidden autocomplete="off">
+      <h2>New notice</h2>
+      <label>Title
+        <input id="f-title" type="text" maxlength="80" required placeholder="e.g. Cloud Computing LLT-I submission">
+      </label>
+      <div class="row">
+        <label>Category
+          <select id="f-category">
+            <option>General</option>
+            <option>Academic</option>
+            <option>Events</option>
+            <option>Placement</option>
+          </select>
+        </label>
+        <label class="check"><input id="f-pinned" type="checkbox"> Pin to top</label>
+      </div>
+      <label>Message
+        <textarea id="f-message" rows="3" maxlength="500" required placeholder="Write the notice (max 500 characters)"></textarea>
+      </label>
+      <button class="btn primary" type="submit">Publish notice</button>
+    </form>
+
+    <section class="listhead">
+      <div id="chips" class="chips" role="tablist" aria-label="Filter by category"></div>
+      <span id="count" class="count"></span>
+    </section>
+
+    <ul id="notices" class="notices"></ul>
+    <p id="empty" class="empty" hidden>No notices yet. Sign in and publish the first one.</p>
+  </main>
+
+  <footer>
+    Built with <strong>Firebase Hosting</strong>, <strong>Cloud Firestore</strong> and
+    <strong>Firebase Authentication</strong> &middot; Cloud Computing LLT-I Tool Explorer
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <noscript>This app needs JavaScript.</noscript>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

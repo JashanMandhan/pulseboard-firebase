@@ -1,0 +1,37 @@
+rules_version = '2';
+
+// PulseBoard security rules
+//  - Anyone can READ notices (public notice board).
+//  - Only a signed-in user can CREATE a notice, and only with valid, bounded fields
+//    that are stamped with their own uid and the server time.
+//  - Notices cannot be edited. Only the author can DELETE their own notice.
+//  - Everything else in the database is denied.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /notices/{noticeId} {
+      allow read: if true;
+
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasAll(['title', 'message', 'category', 'pinned', 'authorUid', 'authorName', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['title', 'message', 'category', 'pinned', 'authorUid', 'authorName', 'createdAt'])
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0 && request.resource.data.title.size() <= 80
+        && request.resource.data.message is string
+        && request.resource.data.message.size() > 0 && request.resource.data.message.size() <= 500
+        && request.resource.data.category in ['General', 'Academic', 'Events', 'Placement']
+        && request.resource.data.pinned is bool
+        && request.resource.data.authorName is string && request.resource.data.authorName.size() <= 100
+        && request.resource.data.authorUid == request.auth.uid
+        && request.resource.data.createdAt == request.time;
+
+      allow update: if false;
+
+      allow delete: if request.auth != null && resource.data.authorUid == request.auth.uid;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
